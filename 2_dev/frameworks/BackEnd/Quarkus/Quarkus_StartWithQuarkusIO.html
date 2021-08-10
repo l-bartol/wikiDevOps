@@ -74,8 +74,8 @@ GRALL OU PAS ? https://www.infoq.com/fr/articles/Graal-Java-JIT-Compiler/ Licens
 		</div>
 		<div class="divinfo">
 			<h4>2. Aller sur code.quarkus.io</h4>
-			Démarrer votre application Quarkus et découvrir son écosystème d'extensions.</br>
-			Explorez le large éventail de technologies avec lesquelles les applications Quarkus peuvent être créées.</br>
+			- Démarrer votre application Quarkus et découvrir son écosystème d'extensions.</br>
+			- Explorer le large éventail de technologies avec lesquelles les applications Quarkus peuvent être créées.</br>
 			<a href="https://code.quarkus.io/" target="_blank">Aller sur : https://code.quarkus.io/"</a></br>
 		</div>
 		<div class="divinfo">
@@ -93,7 +93,6 @@ GRALL OU PAS ? https://www.infoq.com/fr/articles/Graal-Java-JIT-Compiler/ Licens
 		<div class="divinfo">
 			<h4>4. Générer son starter</h4>			
 			Votre application supersonique subatomique est prête !</br>
-			Votre téléchargement devrait commencer sous peu. Si ce n'est pas le cas, veuillez utiliser le lien direct :</br>
 			</br>
 		<div class="divinfo">
 			<h4>5. Installer son starter</h4>
@@ -153,7 +152,7 @@ Press [r] to resume testing, [o] Toggle test output, [h] for more options></code
 		</div>
 		<div class="divinfo">
 			<h4>7. Tester l'application</h4>
-			Lancer un deuxième "Terminal" pour la partie client puis tester les deux URL suivantes :</br>
+			- Lancer un deuxième "Terminal" pour la partie cliente puis tester les deux URL suivantes :</br>
 			<div class="divcode"><pre>
 				<code class="language-bash">start chrome http://localhost:8080 => "our new Cloud-Native application is ready!"
 start chrome http://localhost:8080/hello => Hello RESTEasy</code>
@@ -303,7 +302,7 @@ PS> ./mvnw package
 [INFO] Finished at: 2021-08-10T19:05:54+02:00
 [INFO] ------------------------------------------------------------------------</code>
 			</pre></div>
-		<hr>
+			<hr>
 			- Vérifier la présence du uber-jar sans dépendance : quarkus-start-with-quarkus-io-1.0.0-SNAPSHOT-runner.jar
 			<div class="divcode"><pre>
 				<code class="language-bash">PS> ls ./target/*.jar
@@ -313,6 +312,25 @@ PS> ./mvnw package
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
 -a----        10/08/2021     19:05       12222912 quarkus-start-with-quarkus-io-1.0.0-SNAPSHOT-runner.jar</code>
+			</pre></div>
+			<hr>
+			- Lancer l'application uber-jar
+			<div class="divcode"><pre>
+				<code class="language-bash">PS> cd $home/DEV/Quarkus/Projets/quarkus-start-with-quarkus-io/target
+PS> java -jar quarkus-start-with-quarkus-io-1.0.0-SNAPSHOT-runner.jar
+__  ____  __  _____   ___  __ ____  ______ 
+ --/ __ \/ / / / _ | / _ \/ //_/ / / / __/
+ -/ /_/ / /_/ / __ |/ , _/ ,  / /_/ /\ \
+--\___\_\____/_/ |_/_/|_/_/|_|\____/___/
+2021-08-10 19:37:45,649 INFO  [io.quarkus] (main) quarkus-start-with-quarkus-io 1.0.0-SNAPSHOT on JVM (powered by Quarkus 2.1.1.Final) started in 3.642s. Listening on: http://0.0.0.0:8080
+2021-08-10 19:37:45,665 INFO  [io.quarkus] (main) Profile prod activated. 
+2021-08-10 19:37:45,676 INFO  [io.quarkus] (main) Installed features: [cdi, resteasy, smallrye-context-propagation]</code>
+			</pre></div>
+			<hr>
+			- Lancer un deuxième "Terminal" pour la partie cliente puis tester les deux URL suivantes :</br>
+			<div class="divcode"><pre>
+				<code class="language-bash">start chrome http://localhost:8080 => "our new Cloud-Native application is ready!"
+start chrome http://localhost:8080/hello => Hello RESTEasy</code>
 			</pre></div>
 			<hr>
 			<h5>8.2 native-jar à finir</h5>
