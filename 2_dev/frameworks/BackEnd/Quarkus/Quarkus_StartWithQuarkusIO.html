@@ -266,7 +266,7 @@ PS> ./mvnw package
 [INFO] 
 [INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ quarkus-start-with-quarkus-io ---
 [INFO] Using 'UTF-8' encoding to copy filtered resources.
-[INFO] skip non existing resourceDirectory C:\Users\frup44339\DEV\Quarkus\Projets\quarkus-start-with-quarkus-io\src\test\resources
+[INFO] skip non existing resourceDirectory C:\Users\userName\DEV\Quarkus\Projets\quarkus-start-with-quarkus-io\src\test\resources
 [INFO]
 [INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ quarkus-start-with-quarkus-io 
 ---
@@ -290,11 +290,11 @@ PS> ./mvnw package
 [INFO]
 [INFO] 
 [INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ quarkus-start-with-quarkus-io ---
-[INFO] Building jar: C:\Users\frup44339\DEV\Quarkus\Projets\quarkus-start-with-quarkus-io\target\quarkus-start-with-quarkus-io-1.0.0-SNAPSHOT.jar
+[INFO] Building jar: C:\Users\userName\DEV\Quarkus\Projets\quarkus-start-with-quarkus-io\target\quarkus-start-with-quarkus-io-1.0.0-SNAPSHOT.jar
 [INFO] 
 [INFO] --- quarkus-maven-plugin:2.1.1.Final:build (default) @ quarkus-start-with-quarkus-io ---
 [INFO] [org.jboss.threads] JBoss Threads version 3.4.0.Final
-[INFO] [io.quarkus.deployment.pkg.steps.JarResultBuildStep] Building fat jar: C:\Users\frup44339\DEV\Quarkus\Projets\quarkus-start-with-quarkus-io\target\quarkus-start-with-quarkus-io-1.0.0-SNAPSHOT-runner.jar 
+[INFO] [io.quarkus.deployment.pkg.steps.JarResultBuildStep] Building fat jar: C:\Users\userName\DEV\Quarkus\Projets\quarkus-start-with-quarkus-io\target\quarkus-start-with-quarkus-io-1.0.0-SNAPSHOT-runner.jar 
 [WARNING] [io.quarkus.deployment.pkg.steps.JarResultBuildStep] Dependencies with duplicate files detected. The dependencies [com.sun.activation:jakarta.activation::jar:1.2.1(compile), jakarta.activation:jakarta.activation-api::jar:1.2.1(compile)] contain duplicate files, e.g. javax/activation/SecuritySupport.class[INFO] [io.quarkus.deployment.QuarkusAugmentor] Quarkus augmentation completed in 5736ms
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
@@ -321,12 +321,31 @@ Mode                 LastWriteTime         Length Name
 			<h4>10. Gestion de configuration de la page html courante (Pour info)</h4>
 			<div class="divcode"><pre>
 				<code class="language-bash">cd $home/DEV/wikiDevOps
-git remote add origin https://github.com/MonLoggin/wikiDevOps.git
+git remote add origin https://github.com/githubLogin/wikiDevOps.git
 git add .\2_dev\frameworks\BackEnd\Quarkus\index_Quarkus.html
 git add .\2_dev\frameworks\BackEnd\Quarkus\Quarkus_StartWithQuarkusIO.html
 git status
 git commit -m "Nouveaux fichiers"
+[main 28fff0d] Nouveaux fichiers
+ 2 files changed, 335 insertions(+)
+ create mode 100644 2_dev/frameworks/BackEnd/Quarkus/Quarkus_StartWithQuarkusIO.html
+ 
+git branch
+  list
+* main
+
 git push -u origin main
+Enumerating objects: 14, done.
+Counting objects: 100% (14/14), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (7/7), done.
+Writing objects: 100% (8/8), 5.01 KiB | 1.25 MiB/s, done.
+Total 8 (delta 1), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/l-githubLogin/wikiDevOps.git
+   c5e7378..28fff0d  main -> main
+Branch 'main' set up to track remote branch 'main' from 'origin'.
+
 git diff main origin/main</code>
 			</pre></div>
 		</div>
