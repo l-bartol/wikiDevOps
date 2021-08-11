@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="../../../../styles/highlight/styles/base16/bright.min.css">
+		<link rel="stylesheet" href="../../../../styles/style.css">
+		<script src="../../../../styles/highlight/highlight.min.js"></script>
+		<title>Créer un projet Quarkus JAX-RS RESTEasy avec Visual Studio</title>
+	</head>
+	<body>
+		<script>hljs.highlightAll();</script>
+		<h3><a href="index_Quarkus.html">Retour sur le sommaire Quarkus</a></h3>
+		<div class="divinfo">
+			QUARKUS - CRÉATION DE VOTRE STARTER AVEC VISUAL STUDIO</br>
+			Sommaire</br>
+			<ol>
+				<li>Prérequis</li>
+				<li>Construire son starter</li>
+				<li>Configurer sa future application</li>
+				<li>Créer un "End Point" via une classe java et la tester</li>
+				<li>Tester son application</li>
+				<li>Packager son application</li>
+				<li>Tester son package</li>
+				<li>Gérer en configuration la fiche</li>
+			</ol>
+			<hr>
+			Aide sur les sites suivants :</br>
+			<a href="https://www.youtube.com/watch?v=spWnqkbFgH4&list=PL6oD2syjfW7ADAkICQr-SQcEqsenVPfqg&index=5" target="_blank">Quarkus JAX-RS + RESTEeasy : https://www.youtube.com/watch?v=spWnqkbFgH4&list=PL6oD2syjfW7ADAkICQr-SQcEqsenVPfqg&index=5"</a></br>
+			<a href="https://quarkus.io/blog/quarkus-developer-joy-for-vs-code/" target="_blank">Quarkus et Visual Studio voir : https://quarkus.io/blog/quarkus-developer-joy-for-vs-code/</a></br>
+			<a href="https://quarkus.io/guides/maven-tooling" target="_blank">Quarkus et Maven voir : https://quarkus.io/guides/maven-tooling</a></br>
+		</div>
+		<div class="divinfo">
+			<h4>1. Prérequis</h4>
+			Pour un developpement sur PC Windows, les prérequis sont :</br>
+			- PowerShell
+			- JDK 11+ installé avec JAVA_HOME (Installé avec hotstop OpenJDK11U-jdk_x64_windows_hotspot_11.0.12_7.msi)</br>
+			- Apache Maven 3.8.1+</br>
+			- Visual Studio utilisé (Avec l'Extension : "Quarkus : Quarkus Tools for Visual Studio Code", "Java Getter/Setter : JavaCode Generators") dans notre cas</br>
+			</br>
+			Vérifiez les versions dans une fenêtre powershell :</br>
+			- PowerShell : Get-Host | select version
+			- JAVA_HOME : $env:JAVA_HOME</br>
+			- Java : java -version</br>
+			- Maven : mvn --version</br>
+			- <a href="../../../../2_Dev/Langages/Java/JavaSE/JavaSE_16.html" target="_blank">Si nécessaire : voir exemple mise en place de l'environnement avec power shell.</a></br>
+			Dans ce cas :</br>
+			<div class="divcode"><pre>
+				<code class="language-bash">Get-Host | select version
+Version
+-------
+5.1.18362.1593
+
+$env:JAVA_HOME
+C:\Program Files\Eclipse Foundation\jdk-11.0.12.7-hotspot\
+
+javac -version
+java -version
+openjdk version "11.0.12" 2021-07-20
+OpenJDK Runtime Environment Temurin-11.0.12+7 (build 11.0.12+7)
+OpenJDK 64-Bit Server VM Temurin-11.0.12+7 (build 11.0.12+7, mixed mode)
+
+mvn --version
+Apache Maven 3.8.1 (05c21c65bdfed0f71a2f2ada8b84da59348c4c5d)
+Maven home: C:\Program Files\apache-maven-3.8.1\bin\..
+Java version: 11.0.12, vendor: Eclipse Foundation, runtime: C:\Program Files\Eclipse Foundation\jdk-11.0.12.7-hotspot
+Default locale: fr_FR, platform encoding: Cp1252
+OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"
+
+GRALL OU PAS ? https://www.infoq.com/fr/articles/Graal-Java-JIT-Compiler/ License Oracle ???
+</code>
+			</pre></div>
+		</div>
+		<div class="divinfo">
+			<h4>2. Préparation lancement de Visual Studio</h4>
+			- Ouvrir PowerShell</br>
+			- Se positionner sur le futur projet</br>
+			- Lancer Visual Studio</br>
+			- Se positionner sur le projet : Menu : "File->Open Folder... : $home/DEV/Quarkus/Projets/quarkus-jax-rs-resteasy"</br>
+			<div class="divcode"><pre>
+				<code class="language-bash">PS> cd $home/DEV/Quarkus/Projets
+PS> code</code>
+			</pre></div>
+		</div>
+		<div class="divinfo">
+			<h4>3. Configurer son application</h4>
+			- Appuyer sur les touches : ctrl + shift + P ou bien : fn + f1 (Il faut attendre quelques secondes pour que les questions apparaissent)</br>
+			- Sélectionner : "Quarkus: Generate a Quarkus project"</br>
+			Pick build tool : Maven</br>
+			Your project groupId : edu.tuto</br>
+			Your project artifactId : quarkus-jax-rs-resteasy</br>
+			Your project version : 1.0.0-SNAPSHOT</br>
+			Your package name : edu.tuto</br>
+			Your resource name : FilmResource</br>
+			Pick extensions : RESTEasy JAX-RS
+			$home/DEV/Quarkus/Projets
+			- Appuyer sur "Generate Here"
+			<hr>
+			Rechercher et sélectionner les extensions nécessaires, exemple :</br>
+			- RESTEasy JAX-RS Cette extension contient un example de code</br>
+			"framework point de terminaison REST mettant en œuvre JAX-RS et plus"</br>
+		</div>		
+		<div class="divinfo">
+			<h4>4. Créer un "End Point" via une classe java et la tester</h4>			
+			- Mettre à jour la classe java : FilmResource.java</br>
+			<div class="divcode"><pre>
+				<code class="language-java">package edu.tuto;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import  java.util.stream.Collectors;
+
+@Path("/films")
+public class FilmResource {
+
+    public static List<String> films = new ArrayList<>();
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getFilms() {
+        return Response.ok(films).build();
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/nbre")
+    public Integer countFilms() {
+        return films.size();
+    }
+
+    @POST
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response createFilm(String nomFilm) {
+        films.add(nomFilm);
+        return Response.ok(films).build();
+    }
+
+    @PUT
+    @Path("{nomFilm}")
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response miseAJourFilm(
+        @PathParam("nomFilm") String nomFilm,
+        @QueryParam("majNom") String nouveauNomFilm) {
+        films = films.stream().map(film -> {
+            if (film.equals(nomFilm)) {
+                return nouveauNomFilm;
+            }
+            return film;
+        }).collect(Collectors.toList());
+        return Response.ok(films).build();
+    }
+
+    @DELETE
+    @Path("{nomFilm}")
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response supprimerFilm(@PathParam("nomFilm") String nomFilm) {
+        boolean supprime = films.remove(nomFilm);
+        return supprime ?
+            Response.noContent().build() :
+            Response.status(Response.Status.BAD_REQUEST).build();
+    }
+}</code>
+			</pre></div>
+			<hr>
+			- Ouvrir un terminal</br>
+			- Compiler...</br>
+			<div class="divcode"><pre>
+			<code class="language-bash">PS> cd $home/DEV/Quarkus/Projets/quarkus-jax-rs-resteasy
+PS> mvn compile quarkus:dev
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------  edu.tuto:quarkus-jax-rs-resteasy  ------------------
+[INFO] Building quarkus-jax-rs-resteasy 1.0.0-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- quarkus-maven-plugin:2.1.1.Final:generate-code (default) @ quarkus-jax-rs-resteasy ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ quarkus-jax-rs-resteasy ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 2 resources
+[INFO]
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ quarkus-jax-rs-resteasy ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 1 source file to C:\Users\userName\DEV\Quarkus\Projets\quarkus-jax-rs-resteasy\target\classes
+[INFO]
+[INFO] --- quarkus-maven-plugin:2.1.1.Final:dev (default-cli) @ quarkus-jax-rs-resteasy ---
+[INFO] Invoking org.apache.maven.plugins:maven-resources-plugin:2.6:testResources @ quarkus-jax-rs-resteasy
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\Users\userName\DEV\Quarkus\Projets\quarkus-jax-rs-resteasy\src\test\resources
+[INFO] Invoking org.apache.maven.plugins:maven-compiler-plugin:3.8.1:testCompile @ quarkus-jax-rs-resteasy
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 2 source files to C:\Users\userName\DEV\Quarkus\Projets\quarkus-jax-rs-resteasy\target\test-classes
+Listening for transport dt_socket at address: 5005
+__  ____  __  _____   ___  __ ____  ______ 
+ --/ __ \/ / / / _ | / _ \/ //_/ / / / __/
+ -/ /_/ / /_/ / __ |/ , _/ ,  / /_/ /\ \
+--\___\_\____/_/ |_/_/|_/_/|_|\____/___/
+2021-08-10 23:54:59,289 INFO  [io.quarkus] (Quarkus Main Thread) quarkus-jax-rs-resteasy 1.0.0-SNAPSHOT on JVM (powered by Quarkus 2.1.1.Final) started in 7.125s. Listening on: http://localhost:8080
+2021-08-10 23:54:59,297 INFO  [io.quarkus] (Quarkus Main Thread) Profile dev activated. Live Coding activated.
+2021-08-10 23:54:59,299 INFO  [io.quarkus] (Quarkus Main Thread) Installed features: [cdi, resteasy, smallrye-context-propagation]
+
+--
+Tests paused
+Press [r] to resume testing, [o] Toggle test output, [h] for more options></code>
+			</pre></div>
+			<hr>
+			- Ouvrir un autre "Terminal" client</br>
+			- Tester le "end point" avec postman :</br>
+			<div class="divcode"><pre>
+				<code class="language-bash">PS> cd $home/AppData/Local/Postman/app-8.7.0
+../Postman.exe</code>
+			</pre></div>
+			<hr>
+			- Sélection l'opération : GET</br>
+			- Tapper l'URL : http://localhost:8080/films</br>
+			- Appuyer sur : "Send"</br>
+			- Vérifier la réponse : 200 OK avec une liste de films vide</br>
+			</br>
+			- Sélection l'opération : GET</br>
+			- Tapper l'URL : http://localhost:8080/films/nbre</br>
+			- Appuyer sur : "Send"</br>
+			- Vérifier la réponse : 200 OK avec un nombre de film = 0</br>
+			</br>
+			- Sélection l'opération : POST</br>
+			- Tapper l'URL : http://localhost:8080/films</br>
+			- Appuyer sur : "Body"</br>
+			- Sélectionner : "Text"</br>
+			- Tapper : "MonPremierFilm"
+			- Appuyer sur : "Send"</br>
+			- Vérifier la réponse : 200 OK avec [MonPremierFilm]</br>
+			</br>
+			- Sélection l'opération : GET</br>
+			- Tapper l'URL : http://localhost:8080/films</br>
+			- Appuyer sur : "Send"</br>
+			- Vérifier la réponse : 200 OK avec [MonPremierFilm]</br>
+			</br>
+			- Sélection l'opération : GET</br>
+			- Tapper l'URL : http://localhost:8080/films/nbre</br>
+			- Appuyer sur : "Send"</br>
+			- Vérifier la réponse : 200 OK avec un nombre de film = 1</br>
+			</br>
+			- Sélection l'opération : PUT</br>
+			- Tapper l'URL : http://localhost:8080/films/MonPremierFilm?majNom=MajMonPremierFilm</br>
+			- Appuyer sur : "Send"</br>
+			- Vérifier la réponse : 200 OK avec [MajMonPremierFilm]</br>
+			</br>
+			- Sélection l'opération : DELETE</br>
+			- Tapper l'URL : http://localhost:8080/films/MonPremierFilmInconnu</br>
+			- Appuyer sur : "Send"</br>
+			- Vérifier la réponse : 400 Bad Request</br>			
+			</br>
+			- Sélection l'opération : DELETE</br>
+			- Tapper l'URL : http://localhost:8080/films/MajMonPremierFilm</br>
+			- Appuyer sur : "Send"</br>
+			- Vérifier la réponse : 204 No Content</br>			
+		</div>
+		<div class="divinfo">
+			<h4>5. Créer une classe java Film avec plusieurs arguments</h4>			
+			- Créer la classe java : Film.java</br>
+			<div class="divcode"><pre>
+				<code class="language-java">package edu.tuto;
+
+public class Film {
+    private Long id;
+    private String nomFilm;
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNomFilm() {
+        return this.nomFilm;
+    }
+
+    public void setNomFilm(String nomFilm) {
+        this.nomFilm = nomFilm;
+    }
+}</code>
+			</pre></div>
+			- Mettre à jour le fichier : pom.xml pour pouvoir utiliser JSON</br>
+			<div class="divcode"><pre>
+				<code class="language-xml">&lt;dependency&gt;
+  &lt;groupId&gt;io.quarkus&lt;/groupId&gt;
+  &lt;artifactId&gt;quarkus-resteasy-jackson&lt;/artifactId&gt;
+&lt;/dependency&gt;</code>
+			</pre></div>
+			- Mettre à jour la classe : FilmResource.java pour pouvoir utiliser la classe Film.java</br>			
+			<div class="divcode"><pre>
+				<code class="language-java">package edu.tuto;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.stream.Collectors;
+import java.util.Optional;
+
+@Path("/films")
+public class FilmResource {
+
+    //public static List<String> films = new ArrayList<>();
+    public static List<Film> films = new ArrayList<>();
+//  @GET
+//  @Produces(MediaType.TEXT_PLAIN)
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFilms() {
+        return Response.ok(films).build();
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/nbre")
+    public Integer countFilms() {
+        return films.size();
+    }
+
+//  @POST
+//  @Produces(MediaType.TEXT_PLAIN)
+//  @Consumes(MediaType.TEXT_PLAIN)
+//  public Response createFilm(String nomFilm) {
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createFilm(Film nomFilm) {
+        films.add(nomFilm);
+        return Response.ok(films).build();
+    }
+
+//  @PUT
+//  @Path("{nomFilm}")
+//  @Produces(MediaType.TEXT_PLAIN)
+//  @Consumes(MediaType.TEXT_PLAIN)
+//  public Response miseAJourFilm(
+//      @PathParam("nomFilm") String nomFilm,
+//      @QueryParam("majNom") String nouveauNomFilm) {
+//    films = films.stream().map(film -> {
+//        if (film.equals(nomFilm)) {
+    @PUT
+    @Path("{id}/{titre}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response miseAJourFilm(
+        @PathParam("id") Long id,
+        @PathParam("titre") String titre) {
+        films = films.stream().map(film -> {
+            if (film.getId().equals(id)) {
+                film.setTitre(titre);
+            }
+            return film;
+        }).collect(Collectors.toList());
+        return Response.ok(films).build();
+    }
+
+//  @DELETE
+//  @Path("{nomFilm}")
+//  @Consumes(MediaType.TEXT_PLAIN)
+//  public Response supprimerFilm(@PathParam("nomFilm") String nomFilm) {
+//      boolean supprime = films.remove(nomFilm);
+
+    @DELETE
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response supprimerFilm(@PathParam("id") Long id) {
+        Optional<Film> filmASupprimer = films.stream().filter(film -> film.getId().equals(id)).findFirst();
+        boolean supprime = false;
+        if (filmASupprimer.isPresent()) {
+            supprime = films.remove(filmASupprimer.get());
+        }
+        return supprime ?
+            Response.noContent().build() :
+            Response.status(Response.Status.BAD_REQUEST).build();
+    }
+}</code>
+			</pre></div>
+			<hr>
+			- Ouvrir un terminal</br>
+			- Compiler...</br>
+			<div class="divcode"><pre>
+			<code class="language-bash">PS> cd $home/DEV/Quarkus/Projets/quarkus-jax-rs-resteasy
+PS> mvn compile quarkus:dev
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------  edu.tuto:quarkus-jax-rs-resteasy  ------------------
+[INFO] Building quarkus-jax-rs-resteasy 1.0.0-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- quarkus-maven-plugin:2.1.1.Final:generate-code (default) @ quarkus-jax-rs-resteasy ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ quarkus-jax-rs-resteasy ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 2 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ quarkus-jax-rs-resteasy ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- quarkus-maven-plugin:2.1.1.Final:dev (default-cli) @ quarkus-jax-rs-resteasy ---
+[INFO] Invoking org.apache.maven.plugins:maven-resources-plugin:2.6:testResources @ quarkus-jax-rs-resteasy
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\Users\userName\DEV\Quarkus\Projets\quarkus-jax-rs-resteasy\src\test\resources
+[INFO] Invoking org.apache.maven.plugins:maven-compiler-plugin:3.8.1:testCompile @ quarkus-jax-rs-resteasy
+[INFO] Nothing to compile - all classes are up to date
+Listening for transport dt_socket at address: 5005
+__  ____  __  _____   ___  __ ____  ______ 
+ --/ __ \/ / / / _ | / _ \/ //_/ / / / __/
+ -/ /_/ / /_/ / __ |/ , _/ ,  / /_/ /\ \
+--\___\_\____/_/ |_/_/|_/_/|_|\____/___/
+2021-08-11 03:25:44,452 INFO  [io.quarkus] (Quarkus Main Thread) quarkus-jax-rs-resteasy 1.0.0-SNAPSHOT on JVM (powered by Quarkus 2.1.1.Final) started in 7.509s. Listening on: http://localhost:8080
+2021-08-11 03:25:44,464 INFO  [io.quarkus] (Quarkus Main Thread) Profile dev activated. Live Coding activated.
+2021-08-11 03:25:44,467 INFO  [io.quarkus] (Quarkus Main Thread) Installed features: [cdi, resteasy, resteasy-jackson, smallrye-context-propagation]
+
+--
+Tests paused
+Press [r] to resume testing, [o] Toggle test output, [h] for more options></code>
+			</pre></div>
+			<hr>
+			- Ouvrir un autre "Terminal" client</br>
+			- Tester le "end point" avec postman :</br>
+			<div class="divcode"><pre>
+				<code class="language-bash">PS> cd $home/AppData/Local/Postman/app-8.7.0
+../Postman.exe</code>
+			</pre></div>
+			<hr>
+			- Sélection l'opération : GET</br>
+			- Tapper l'URL : http://localhost:8080/films</br>
+			- Appuyer sur : "Send"</br>
+			- Vérifier la réponse : 200 OK avec une liste de films vide</br>
+			</br>
+			- Sélection l'opération : GET</br>
+			- Tapper l'URL : http://localhost:8080/films/nbre</br>
+			- Appuyer sur : "Send"</br>
+			- Vérifier la réponse : 200 OK avec un nombre de film = 0</br>
+			</br>
+			- Sélection l'opération : POST</br>
+			- Tapper l'URL : http://localhost:8080/films</br>
+			- Appuyer sur : "Body"</br>
+			- Sélectionner : "Raw"</br>
+			- Sélectionner : "JSON"</br>
+			- Tapper :</br>
+				{</br>
+					&nbsp;"id": 1,</br>
+					&nbsp;"titre": "MonPremierFilm"</br>
+				}</br>
+			- Appuyer sur : "Send"</br>
+			- Vérifier la réponse : 200 OK</br>
+			[</br>
+				&nbsp;{</br>
+					&nbsp;&nbsp;"id": 1,</br>
+					&nbsp;&nbsp;"titre": "MonPremierFilm"</br>
+				&nbsp;}</br>
+			]</br>
+			</br>
+			- Sélection l'opération : GET</br>
+			- Tapper l'URL : http://localhost:8080/films</br>
+			- Appuyer sur : "Send"</br>
+			- Vérifier la réponse : 200 OK</br>
+			[</br>
+				&nbsp;{</br>
+					&nbsp;&nbsp;"id": 1,</br>
+					&nbsp;&nbsp;"titre": "MonPremierFilm"</br>
+				&nbsp;}</br>
+			]</br>
+			</br>
+			- Sélection l'opération : GET</br>
+			- Tapper l'URL : http://localhost:8080/films/nbre</br>
+			- Appuyer sur : "Send"</br>
+			- Vérifier la réponse : 200 OK avec un nombre de film = 1</br>
+			</br>
+			- Sélection l'opération : PUT</br>
+			- Tapper l'URL : http://localhost:8080/films/1/MajMonPremierFilm</br>
+			- Appuyer sur : "Send"</br>
+			- Vérifier la réponse : 200 OK</br>
+			[</br>
+				&nbsp;{</br>
+					&nbsp;&nbsp;"id": 1,</br>
+					&nbsp;&nbsp;"titre": "MajMonPremierFilm"</br>
+				&nbsp;}</br>
+			]</br>
+			</br>
+			- Sélection l'opération : DELETE</br>
+			- Tapper l'URL : http://localhost:8080/films/2</br>
+			- Appuyer sur : "Send"</br>
+			- Vérifier la réponse : 400 Bad Request</br>			
+			</br>
+			- Sélection l'opération : DELETE</br>
+			- Tapper l'URL : http://localhost:8080/films/1</br>
+			- Appuyer sur : "Send"</br>
+			- Vérifier la réponse : 204 No Content</br>			
+		</div>
+		<div class="divinfo">
+			<h4>6. Gestion de configuration de la page html courante (Pour info)</h4>
+			<div class="divcode"><pre>
+				<code class="language-bash">cd $home/DEV/wikiDevOps
+git remote add origin https://github.com/githubLogin/wikiDevOps.git
+git add .\2_dev\frameworks\BackEnd\Quarkus\index_Quarkus.html
+git add .\2_dev\frameworks\BackEnd\Quarkus\Quarkus_JAX-RS_RESTEasy.html
+git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        modified:   2_dev/frameworks/BackEnd/Quarkus/Quarkus_JAX-RS_RESTEasy.html
+        modified:   2_dev/frameworks/BackEnd/Quarkus/index_Quarkus.html
+
+git commit -m "Nouveaux fichiers"
+[main 9683afd] Nouveaux fichiers
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+ 
+git branch
+  list
+* main
+
+git push -u origin main
+Enumerating objects: 15, done.
+Counting objects: 100% (15/15), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (7/7), done.
+Writing objects: 100% (8/8), 914 bytes | 457.00 KiB/s, done.
+Total 8 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/githubLogin/wikiDevOps.git
+   b0a030e..9683afd  main -> main
+Branch 'main' set up to track remote branch 'main' from 'origin'.
+
+git diff main origin/main</code>
+			</pre></div>
+		</div>
+	</body>
+</html>
