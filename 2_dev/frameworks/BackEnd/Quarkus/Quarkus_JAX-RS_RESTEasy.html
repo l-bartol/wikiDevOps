@@ -5,29 +5,28 @@
 		<link rel="stylesheet" href="../../../../styles/highlight/styles/base16/bright.min.css">
 		<link rel="stylesheet" href="../../../../styles/style.css">
 		<script src="../../../../styles/highlight/highlight.min.js"></script>
-		<title>Créer un projet Quarkus JAX-RS RESTEasy avec Visual Studio</title>
+		<title>Tuto Quarkus JAX-RS RESTEasy avec Visual Studio</title>
 	</head>
 	<body>
 		<script>hljs.highlightAll();</script>
 		<h3><a href="index_Quarkus.html">Retour sur le sommaire Quarkus</a></h3>
 		<div class="divinfo">
-			QUARKUS - CRÉATION DE VOTRE STARTER AVEC VISUAL STUDIO</br>
+			QUARKUS - TUTO JAX-RS + RESTEeasy AVEC VISUAL STUDIO</br>
+			</br>
 			Sommaire</br>
 			<ol>
 				<li>Prérequis</li>
 				<li>Construire son starter</li>
 				<li>Configurer sa future application</li>
 				<li>Créer un "End Point" via une classe java et la tester</li>
-				<li>Tester son application</li>
-				<li>Packager son application</li>
-				<li>Tester son package</li>
+				<li>Créer une classe java Film avec plusieurs arguments</li>
 				<li>Gérer en configuration la fiche</li>
 			</ol>
 			<hr>
-			Aide sur les sites suivants :</br>
-			<a href="https://www.youtube.com/watch?v=spWnqkbFgH4&list=PL6oD2syjfW7ADAkICQr-SQcEqsenVPfqg&index=5" target="_blank">Quarkus JAX-RS + RESTEeasy : https://www.youtube.com/watch?v=spWnqkbFgH4&list=PL6oD2syjfW7ADAkICQr-SQcEqsenVPfqg&index=5"</a></br>
-			<a href="https://quarkus.io/blog/quarkus-developer-joy-for-vs-code/" target="_blank">Quarkus et Visual Studio voir : https://quarkus.io/blog/quarkus-developer-joy-for-vs-code/</a></br>
-			<a href="https://quarkus.io/guides/maven-tooling" target="_blank">Quarkus et Maven voir : https://quarkus.io/guides/maven-tooling</a></br>
+			Autres sources :</br>
+			<a href="https://www.youtube.com/watch?v=spWnqkbFgH4&list=PL6oD2syjfW7ADAkICQr-SQcEqsenVPfqg&index=5" target="_blank">Quarkus et JAX-RS + RESTEeasy</a></br>
+			<a href="https://quarkus.io/blog/quarkus-developer-joy-for-vs-code/" target="_blank">Quarkus et Visual Studio</a></br>
+			<a href="https://quarkus.io/guides/maven-tooling" target="_blank">Quarkus et Maven</a></br>
 		</div>
 		<div class="divinfo">
 			<h4>1. Prérequis</h4>
@@ -65,26 +64,27 @@ Maven home: C:\Program Files\apache-maven-3.8.1\bin\..
 Java version: 11.0.12, vendor: Eclipse Foundation, runtime: C:\Program Files\Eclipse Foundation\jdk-11.0.12.7-hotspot
 Default locale: fr_FR, platform encoding: Cp1252
 OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"
-
-GRALL OU PAS ? https://www.infoq.com/fr/articles/Graal-Java-JIT-Compiler/ License Oracle ???
 </code>
 			</pre></div>
 		</div>
 		<div class="divinfo">
 			<h4>2. Préparation lancement de Visual Studio</h4>
 			- Ouvrir PowerShell</br>
-			- Se positionner sur le futur projet</br>
+			- Créer le répertoire du futur Tuto
+			- Se positionner dans le répertoire</br>
 			- Lancer Visual Studio</br>
-			- Se positionner sur le projet : Menu : "File->Open Folder... : $home/DEV/Quarkus/Projets/quarkus-jax-rs-resteasy"</br>
 			<div class="divcode"><pre>
 				<code class="language-bash">PS> cd $home/DEV/Quarkus/Projets
+PS> mkdir quarkus-jax-rs-resteasy
+PS> cd quarkus-jax-rs-resteasy
 PS> code</code>
 			</pre></div>
+			- Se positionner sur le Tuto : Menu : "File->Open Folder... : $home/DEV/Quarkus/Projets/quarkus-jax-rs-resteasy"</br>
 		</div>
 		<div class="divinfo">
 			<h4>3. Configurer son application</h4>
-			- Appuyer sur les touches : ctrl + shift + P ou bien : fn + f1 (Il faut attendre quelques secondes pour que les questions apparaissent)</br>
-			- Sélectionner : "Quarkus: Generate a Quarkus project"</br>
+			- Appuyer sur les touches : ctrl + shift + P ou bien : fn + f1</br>
+			- Sélectionner : "Quarkus: Generate a Quarkus project" (Il faut attendre quelques secondes pour que les questions apparaissent)</br>
 			Pick build tool : Maven</br>
 			Your project groupId : edu.tuto</br>
 			Your project artifactId : quarkus-jax-rs-resteasy</br>
